@@ -5,7 +5,6 @@ services:
     env: node
     rootDir: server
     plan: free
-    region: singapore
     buildCommand: npm install && npm run build
     startCommand: npm start
     envVars:
@@ -28,7 +27,6 @@ services:
     env: static
     rootDir: client
     plan: free
-    region: singapore
     buildCommand: npm install && npm run build
     staticPublishPath: dist
     routes:
