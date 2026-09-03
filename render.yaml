@@ -1,0 +1,40 @@
+services:
+  # 1. Backend Web Service (Node.js + Express API)
+  - type: web
+    name: vishakhamam-elearning-api
+    env: node
+    rootDir: server
+    plan: free
+    region: singapore
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 5000
+      - key: MONGO_URI
+        value: mongodb+srv://useradmin:Pass1234@cluster0.0b0qf.mongodb.net/elearning_platform?retryWrites=true&w=majority
+      - key: JWT_SECRET
+        value: vishakhamam_jwt_super_secret_production_key_2026
+      - key: JWT_REFRESH_SECRET
+        value: vishakhamam_jwt_super_refresh_production_key_2026
+      - key: CLIENT_URL
+        value: https://vishakhamam-elearning-web.onrender.com
+
+  # 2. Frontend Static Site (React + Vite SPA)
+  - type: web
+    name: vishakhamam-elearning-web
+    env: static
+    rootDir: client
+    plan: free
+    region: singapore
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    envVars:
+      - key: VITE_API_BASE_URL
+        value: https://vishakhamam-elearning-api.onrender.com/api
