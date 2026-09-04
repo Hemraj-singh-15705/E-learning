@@ -57,8 +57,5 @@ const mentorProfileSchema = new Schema<IMentorProfile>(
   }
 );
 
-mentorProfileSchema.index({ mentorId: 1 });
-mentorProfileSchema.index({ user: 1 });
-
 export const MentorProfile = mongoose.model<IMentorProfile>('MentorProfile', mentorProfileSchema);
 export default MentorProfile;

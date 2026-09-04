@@ -45,8 +45,5 @@ const studentProfileSchema = new Schema<IStudentProfile>(
   }
 );
 
-studentProfileSchema.index({ studentId: 1 });
-studentProfileSchema.index({ user: 1 });
-
 export const StudentProfile = mongoose.model<IStudentProfile>('StudentProfile', studentProfileSchema);
 export default StudentProfile;

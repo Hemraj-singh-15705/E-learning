@@ -16,13 +16,16 @@ import app from './app';
 import { connectDB } from './config/db';
 
 const startServer = async () => {
-  // Connect to database
-  await connectDB();
-
-  const port = process.env.PORT || 5000;
+  const port = Number(process.env.PORT) || 5000;
   
-  const server = app.listen(port, () => {
-    console.log(`Server running in ${process.env.NODE_ENV || 'development'} mode on port ${port}`);
+  // Start listening on 0.0.0.0 immediately so cloud port scanners detect it instantly
+  const server = app.listen(port, '0.0.0.0', () => {
+    console.log(`Server running in ${process.env.NODE_ENV || 'development'} mode on port ${port} (0.0.0.0:${port})`);
+  });
+
+  // Connect to database
+  connectDB().catch((err) => {
+    console.error('Failed to connect to MongoDB on startup:', err);
   });
 
   // Handle unhandled rejections globally
