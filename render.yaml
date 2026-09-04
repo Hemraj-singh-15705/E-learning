@@ -1,5 +1,5 @@
 services:
-  # 1. Backend Web Service (Node.js + Express API)
+  # Backend Web Service (Node.js + Express API)
   - type: web
     name: vishakhamam-elearning-api
     env: node
@@ -24,21 +24,3 @@ services:
         value: 7d
       - key: CLIENT_URL
         value: https://e-learning-8kov.vercel.app
-
-  # 2. Frontend Static Site (React + Vite SPA)
-  - type: web
-    name: vishakhamam-elearning-web
-    env: static
-    rootDir: client
-    plan: free
-    buildCommand: npm install && npm run build
-    staticPublishPath: dist
-    routes:
-      - type: rewrite
-        source: /*
-        destination: /index.html
-    envVars:
-      - key: VITE_API_URL
-        value: https://vishakhamam-elearning-api.onrender.com/api/v1
-      - key: VITE_API_BASE_URL
-        value: https://vishakhamam-elearning-api.onrender.com/api/v1
