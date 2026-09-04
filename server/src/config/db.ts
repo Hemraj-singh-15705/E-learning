@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import { autoSeedIfEmpty } from '../utils/autoSeed';
 
 export const connectDB = async (): Promise<void> => {
   try {
@@ -17,6 +18,9 @@ export const connectDB = async (): Promise<void> => {
     });
 
     await mongoose.connect(mongoURI);
+    
+    // Automatically seed default student/admin accounts if database is empty
+    await autoSeedIfEmpty();
   } catch (error) {
     console.error('Failed to connect to MongoDB on startup:', error);
     process.exit(1);
