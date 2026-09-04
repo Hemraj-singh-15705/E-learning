@@ -1,7 +1,8 @@
 import axios from 'axios';
+import { setCredentials, clearCredentials } from '../store/authSlice';
 
 // Get API base URL from env or default to localhost
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api/v1';
+const API_URL = import.meta.env.VITE_API_URL || import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api/v1';
 
 export const api = axios.create({
   baseURL: API_URL,
@@ -56,7 +57,6 @@ api.interceptors.response.use(
         
         // Dispatch actions to update state with new tokens
         if (store) {
-          const { setCredentials } = await import('../store/authSlice');
           store.dispatch(setCredentials({ token, user }));
         }
         
@@ -66,7 +66,6 @@ api.interceptors.response.use(
       } catch (refreshError) {
         // If refresh fails, clear auth credentials and force logout
         if (store) {
-          const { clearCredentials } = await import('../store/authSlice');
           store.dispatch(clearCredentials());
         }
         return Promise.reject(refreshError);
