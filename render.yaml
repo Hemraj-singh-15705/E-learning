@@ -5,7 +5,7 @@ services:
     env: node
     rootDir: server
     plan: free
-    buildCommand: npm install && npm run build
+    buildCommand: npm install --include=dev && npm run build
     startCommand: npm start
     envVars:
       - key: NODE_ENV
@@ -23,7 +23,7 @@ services:
       - key: JWT_REFRESH_EXPIRES_IN
         value: 7d
       - key: CLIENT_URL
-        value: https://vishakhamam-elearning-web.onrender.com
+        value: https://e-learning-8kov.vercel.app
 
   # 2. Frontend Static Site (React + Vite SPA)
   - type: web
