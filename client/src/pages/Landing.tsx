@@ -26,7 +26,9 @@ import {
   LogOut,
   LayoutDashboard,
   ShieldAlert,
-  Send
+  Send,
+  Menu,
+  X
 } from 'lucide-react';
 import Button from '../components/ui/Button';
 
@@ -459,6 +461,7 @@ export const Landing: React.FC = () => {
   const [selectedBatchModal, setSelectedBatchModal] = useState<any | null>(null);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [demoVideoPlaying, setDemoVideoPlaying] = useState<string | null>(null);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
 
   const { user, isAuthenticated } = useSelector((state: RootState) => state.auth);
   const dispatch = useDispatch();
@@ -497,11 +500,11 @@ export const Landing: React.FC = () => {
   };
 
   return (
-    <div className="min-vh-100 w-100 d-flex flex-column position-relative overflow-hidden text-start" style={{ backgroundColor: '#ffffff', color: '#1e293b' }}>
+    <div className="min-vh-100 w-100 d-flex flex-column position-relative overflow-hidden text-start pb-5 pb-md-0" style={{ backgroundColor: '#ffffff', color: '#1e293b' }}>
       {/* 1. Top Admissions & YouTube/Telegram Strip */}
       <div className="w-100 py-1.5 px-3 border-bottom d-flex flex-wrap justify-content-center align-items-center gap-2 text-center text-dark" style={{ background: 'linear-gradient(90deg, #fefce8 0%, #fef3c7 50%, #fde68a 100%)', borderColor: '#fde68a', fontSize: '0.78rem', zIndex: 101 }}>
         <span className="badge bg-warning text-dark fw-bold px-2 py-0.5" style={{ fontSize: '0.7rem' }}>🔥 DSSSB & CTET 2026-27 ADMISSIONS OPEN</span>
-        <span className="fw-semibold" style={{ color: '#78350f' }}>Join Official Batches by Vishakha Ma'am | Coupon: <span className="badge bg-white text-dark border border-warning px-1.5 py-0.5">WELCOME20</span></span>
+        <span className="fw-semibold text-truncate max-w-xs max-w-md-none" style={{ color: '#78350f' }}>Join Official Batches | Coupon: <span className="badge bg-white text-dark border border-warning px-1.5 py-0.5">WELCOME20</span></span>
         <span className="d-none d-md-inline opacity-75 text-secondary">|</span>
         <a href="https://youtube.com/@vishakhamam_official?si=W5qeCXK7eIMw1orG" target="_blank" rel="noreferrer" className="d-inline-flex align-items-center gap-1 text-white text-decoration-none bg-danger px-2.5 py-0.5 rounded-pill shadow-sm" style={{ fontSize: '0.72rem' }}>
           <YouTubeIcon size={13} /> YouTube Channel
@@ -513,8 +516,8 @@ export const Landing: React.FC = () => {
 
       {/* 2. Main Header / Navigation Bar */}
       <nav className="navbar navbar-expand-lg border-bottom sticky-top px-3 px-md-4 py-2.5 shadow-sm" style={{ backgroundColor: '#ffffff', borderColor: '#e2e8f0', zIndex: 100 }}>
-        <div className="container-fluid max-w-7xl">
-          <Link to="/" className="navbar-brand d-flex align-items-center gap-2 text-decoration-none me-3">
+        <div className="container-fluid max-w-7xl px-0 px-sm-2">
+          <Link to="/" className="navbar-brand d-flex align-items-center gap-2 text-decoration-none me-auto me-lg-3">
             <div className="p-1.5 rounded-3 text-white shadow-sm" style={{ background: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)' }}>
               <GraduationCap className="h-5 w-5 text-dark" />
             </div>
@@ -522,7 +525,7 @@ export const Landing: React.FC = () => {
               <span className="fw-black fs-5 tracking-tight font-display lh-1" style={{ color: '#0f172a' }}>
                 Vishakha Ma'am<span style={{ color: '#d97706' }}> Official</span>
               </span>
-              <span className="text-secondary text-uppercase fw-bold" style={{ fontSize: '0.58rem', letterSpacing: '0.06em' }}>
+              <span className="text-secondary text-uppercase fw-bold d-none d-sm-inline" style={{ fontSize: '0.58rem', letterSpacing: '0.06em' }}>
                 India's #1 Teaching Exam Platform
               </span>
             </div>
@@ -550,25 +553,13 @@ export const Landing: React.FC = () => {
           </div>
 
           {/* Dynamic Authentication State Buttons */}
-          <div className="d-flex align-items-center gap-2">
+          <div className="d-flex align-items-center gap-1.5 gap-sm-2">
             {isAuthenticated && user ? (
-              <div className="d-flex align-items-center gap-2">
-                <div className="d-none d-sm-flex align-items-center gap-2 px-2.5 py-1 rounded-pill border" style={{ backgroundColor: '#f8fafc', borderColor: '#e2e8f0' }}>
-                  <div className="bg-warning text-dark fw-bold rounded-circle p-1 d-flex align-items-center justify-content-center" style={{ width: '24px', height: '24px', fontSize: '0.72rem' }}>
-                    {user.name.charAt(0)}
-                  </div>
-                  <div className="d-flex flex-column text-start">
-                    <span className="fw-bold text-dark small lh-1">{user.name}</span>
-                    <span className="text-secondary" style={{ fontSize: '0.62rem' }}>
-                      {user.role === 'STUDENT' ? '🎓 Student' : user.role === 'MENTOR' ? '👨‍🏫 Faculty' : '👑 Admin'}
-                    </span>
-                  </div>
-                </div>
-
+              <div className="d-flex align-items-center gap-1.5 gap-sm-2">
                 <Link to={user.role === 'SUPER_ADMIN' || user.role === 'ADMIN' ? '/admin/analytics' : user.role === 'MENTOR' ? '/mentor/sessions' : '/dashboard'}>
-                  <Button size="sm" className="d-inline-flex align-items-center gap-1 btn-warning text-dark fw-bold py-1 px-2.5" style={{ fontSize: '0.8rem' }}>
+                  <Button size="sm" className="d-inline-flex align-items-center gap-1 btn-warning text-dark fw-bold py-1 px-2 px-sm-2.5" style={{ fontSize: '0.78rem' }}>
                     <LayoutDashboard className="h-3.5 w-3.5" />
-                    Enter Classroom
+                    <span className="d-none d-sm-inline">Enter</span> Classroom
                   </Button>
                 </Link>
 
@@ -581,23 +572,111 @@ export const Landing: React.FC = () => {
                 </button>
               </div>
             ) : (
-              <div className="d-flex align-items-center gap-2">
+              <div className="d-flex align-items-center gap-1.5 gap-sm-2">
                 <Link to="/login" className="text-decoration-none">
-                  <Button variant="ghost" size="sm" className="fw-semibold text-dark py-1 px-2.5 border" style={{ fontSize: '0.82rem', borderColor: '#cbd5e1' }}>
+                  <Button variant="ghost" size="sm" className="fw-semibold text-dark py-1 px-2 px-sm-2.5 border" style={{ fontSize: '0.78rem', borderColor: '#cbd5e1' }}>
                     <GraduationCap className="h-4 w-4 me-1 text-warning" />
-                    Student Login
+                    Login
                   </Button>
                 </Link>
-                <Link to="/register" className="text-decoration-none">
-                  <Button size="sm" className="fw-bold btn-warning text-dark py-1 px-3" style={{ fontSize: '0.82rem' }}>
-                    Enroll Free Trial
+                <Link to="/register" className="text-decoration-none d-none d-sm-inline-block">
+                  <Button size="sm" className="fw-bold btn-warning text-dark py-1 px-3" style={{ fontSize: '0.8rem' }}>
+                    Enroll Free
                   </Button>
                 </Link>
               </div>
             )}
+
+            {/* Mobile Hamburger Menu Toggle Button */}
+            <button
+              type="button"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="btn btn-sm btn-outline-secondary d-xl-none p-1.5 ms-1"
+              aria-label="Toggle navigation"
+            >
+              {mobileMenuOpen ? <X className="h-5 w-5 text-dark" /> : <Menu className="h-5 w-5 text-dark" />}
+            </button>
           </div>
         </div>
       </nav>
+
+      {/* Slide-out Mobile Navigation Drawer */}
+      {mobileMenuOpen && (
+        <>
+          <div
+            className="position-fixed top-0 start-0 w-100 h-100 bg-dark bg-opacity-50 d-xl-none transition-all"
+            style={{ zIndex: 1045 }}
+            onClick={() => setMobileMenuOpen(false)}
+          />
+          <div
+            className="position-fixed top-0 end-0 h-100 bg-white border-start shadow-2xl p-4 d-flex flex-column d-xl-none transition-all animate-enter"
+            style={{ width: '85%', maxWidth: '320px', zIndex: 1050 }}
+          >
+            <div className="d-flex justify-content-between align-items-center mb-3 pb-3 border-bottom">
+              <div className="d-flex align-items-center gap-2">
+                <div className="p-1.5 rounded-3 text-white shadow-sm" style={{ background: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)' }}>
+                  <GraduationCap className="h-5 w-5 text-dark" />
+                </div>
+                <span className="fw-black fs-6 font-display" style={{ color: '#0f172a' }}>Vishakha Ma'am</span>
+              </div>
+              <button onClick={() => setMobileMenuOpen(false)} className="btn btn-sm btn-outline-secondary p-1 border-0">
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+
+            <div className="d-flex flex-column gap-2 mb-auto overflow-auto text-start">
+              <a href="#batches" onClick={() => setMobileMenuOpen(false)} className="d-flex align-items-center gap-2.5 py-2 px-3 rounded-3 text-dark text-decoration-none fw-semibold hover-bg-light">
+                <BookOpen className="h-4 w-4 text-warning" /> All Target Batches
+              </a>
+              <a href="#faculty" onClick={() => setMobileMenuOpen(false)} className="d-flex align-items-center gap-2.5 py-2 px-3 rounded-3 text-dark text-decoration-none fw-semibold hover-bg-light">
+                <Users className="h-4 w-4 text-primary" /> Master Faculty Team
+              </a>
+              <a href="#schedule" onClick={() => setMobileMenuOpen(false)} className="d-flex align-items-center gap-2.5 py-2 px-3 rounded-3 text-dark text-decoration-none fw-semibold hover-bg-light">
+                <Clock className="h-4 w-4 text-danger" /> Today's Live Schedule
+              </a>
+              <a href="#demo" onClick={() => setMobileMenuOpen(false)} className="d-flex align-items-center gap-2.5 py-2 px-3 rounded-3 text-dark text-decoration-none fw-semibold hover-bg-light">
+                <PlayCircle className="h-4 w-4 text-success" /> Free Demo Classes & Notes
+              </a>
+              <a href="#results" onClick={() => setMobileMenuOpen(false)} className="d-flex align-items-center gap-2.5 py-2 px-3 rounded-3 text-dark text-decoration-none fw-semibold hover-bg-light">
+                <Award className="h-4 w-4 text-info" /> Selection Results
+              </a>
+              <Link to="/pricing" onClick={() => setMobileMenuOpen(false)} className="d-flex align-items-center gap-2.5 py-2 px-3 rounded-3 text-dark text-decoration-none fw-semibold hover-bg-light">
+                <BadgeCheck className="h-4 w-4 text-warning" /> Fees & Plans
+              </Link>
+              
+              <div className="pt-3 border-top mt-2 d-flex flex-column gap-2">
+                <a href="https://youtube.com/@vishakhamam_official?si=W5qeCXK7eIMw1orG" target="_blank" rel="noreferrer" className="btn btn-sm btn-outline-danger d-flex align-items-center justify-content-center gap-2 py-2 fw-semibold">
+                  <YouTubeIcon size={16} /> YouTube Channel
+                </a>
+                <a href="https://t.me/vishakhamaam16" target="_blank" rel="noreferrer" className="btn btn-sm btn-outline-primary d-flex align-items-center justify-content-center gap-2 py-2 fw-semibold">
+                  <Send className="h-4 w-4" /> Telegram Community
+                </a>
+              </div>
+            </div>
+
+            <div className="pt-3 border-top d-flex flex-column gap-2">
+              {isAuthenticated && user ? (
+                <Link
+                  to={user.role === 'SUPER_ADMIN' || user.role === 'ADMIN' ? '/admin/analytics' : user.role === 'MENTOR' ? '/mentor/sessions' : '/dashboard'}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="btn btn-warning text-dark fw-bold w-100 py-2 d-flex align-items-center justify-content-center gap-2"
+                >
+                  <LayoutDashboard className="h-4 w-4" /> Enter Study Room
+                </Link>
+              ) : (
+                <>
+                  <Link to="/login" onClick={() => setMobileMenuOpen(false)} className="btn btn-outline-secondary w-100 py-2 fw-bold text-dark">
+                    Student Login
+                  </Link>
+                  <Link to="/register" onClick={() => setMobileMenuOpen(false)} className="btn btn-warning text-dark fw-bold w-100 py-2">
+                    Enroll Free Trial
+                  </Link>
+                </>
+              )}
+            </div>
+          </div>
+        </>
+      )}
 
       {/* 3. Logged-in Student Quick Banner */}
       {isAuthenticated && user && (
@@ -715,13 +794,13 @@ export const Landing: React.FC = () => {
             Choose your target recruitment exam. Every batch includes full live syllabus video classes, chapter-wise DPPs, test series, and doubt clearing.
           </p>
 
-          {/* Category Filter Pills */}
-          <div className="d-flex flex-wrap justify-content-center gap-1.5">
+          {/* Category Filter Pills (Swipeable on Mobile) */}
+          <div className="no-scrollbar overflow-x-auto d-flex flex-nowrap justify-content-start justify-content-md-center gap-1.5 py-1 px-2 mb-2">
             {categories.map((cat) => (
               <button
                 key={cat}
                 onClick={() => setSelectedCategory(cat)}
-                className={`btn btn-sm rounded-pill px-2.5 py-1 transition-all ${
+                className={`btn btn-sm rounded-pill px-3 py-1 transition-all shrink-0 text-nowrap ${
                   selectedCategory === cat
                     ? 'btn-warning text-dark shadow fw-bold'
                     : 'btn-outline-secondary text-secondary'
@@ -1400,6 +1479,39 @@ export const Landing: React.FC = () => {
           </div>
         </div>
       )}
+
+      {/* Mobile Floating App Bottom Bar (Fixed on Phones) */}
+      <div
+        className="d-md-none position-fixed bottom-0 start-0 w-100 bg-white border-top shadow-lg d-flex justify-content-around align-items-center py-2 px-1 transition-all"
+        style={{
+          zIndex: 1020,
+          borderColor: '#e2e8f0',
+          backdropFilter: 'blur(10px)',
+          backgroundColor: 'rgba(255, 255, 255, 0.96)'
+        }}
+      >
+        <a href="#batches" className="d-flex flex-column align-items-center text-decoration-none text-dark py-1 px-2">
+          <BookOpen className="h-4 w-4 text-warning mb-0.5" />
+          <span style={{ fontSize: '0.68rem', fontWeight: 600 }}>Batches</span>
+        </a>
+        <a href="#schedule" className="d-flex flex-column align-items-center text-decoration-none text-dark py-1 px-2">
+          <Video className="h-4 w-4 text-danger mb-0.5" />
+          <span style={{ fontSize: '0.68rem', fontWeight: 600 }}>Live Class</span>
+        </a>
+        <a href="#demo" className="d-flex flex-column align-items-center text-decoration-none text-dark py-1 px-2">
+          <PlayCircle className="h-4 w-4 text-success mb-0.5" />
+          <span style={{ fontSize: '0.68rem', fontWeight: 600 }}>Free Notes</span>
+        </a>
+        <Link
+          to={isAuthenticated ? '/dashboard' : '/login'}
+          className="d-flex flex-column align-items-center text-decoration-none text-dark py-1 px-2"
+        >
+          <GraduationCap className="h-4 w-4 text-primary mb-0.5" />
+          <span style={{ fontSize: '0.68rem', fontWeight: 700, color: '#d97706' }}>
+            {isAuthenticated ? 'Classroom' : 'Sign In'}
+          </span>
+        </Link>
+      </div>
 
     </div>
   );

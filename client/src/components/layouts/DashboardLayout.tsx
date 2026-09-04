@@ -117,6 +117,15 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
         minHeight: '100vh'
       }}
     >
+      {/* Mobile Backdrop Overlay */}
+      {sidebarOpen && (
+        <div
+          className="position-fixed top-0 start-0 w-100 h-100 bg-dark bg-opacity-50 d-lg-none transition-all"
+          style={{ zIndex: 1040 }}
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
       {/* Desktop & Mobile Sidebar */}
       <aside
         className={`d-flex flex-column border-end position-sticky top-0 transition-all ${
